@@ -1,6 +1,6 @@
 from main import app 
 from flask import render_template, redirect, url_for, flash, request 
-from flask_login import login_user, logout_user, current_user, LoginManager
+from flask_login import login_user, logout_user, current_user, LoginManager, login_required
 from controller.models import * 
 
 login_manager = LoginManager(app)
@@ -40,7 +40,12 @@ def login():
         if user and user.password == password:
             login_user(user)
             flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
+            if user.role == 'admin':
+                return redirect(url_for('admin_dashboard')) 
+            else:
+                return redirect(url_for('user_dashboard', username = user.username))
+            
+        
         
 @app.route('/logout')
 def logout():
@@ -60,6 +65,7 @@ def register():
         email_id = request.form["email"]
         password = request.form["password"] 
         confirm_password = request.form["confirm_password"]
+        full_name = request.form["full_name"]
         username = request.form["username"] 
 
         if "@" not in email_id:
@@ -79,12 +85,18 @@ def register():
             flash("User already exists. Please go to login, or use a different email") 
             return render_template("register.html")
         
-        user = User(email=email_id,password=password,username=username,role="user")
+        user = User(email=email_id,password=password,username=username,full_name=full_name,role="user")
         db.session.add(user)
         db.session.commit() 
         
         flash("User registered successfully")
         return redirect(url_for("login"))
+    
+@app.route('/{username}/home')
+@login_required
+def user_dashboard():
+    return render_template('user_dashboard.html')
+
         
         
 

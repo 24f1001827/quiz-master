@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Quiz{% endblock %}
+
+{% block content %}
+  <h1>Edit Quiz</h1>
+  <form action = "/edit_quiz/{{quiz.id}}" method="post">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" value="{{ quiz.name }}" required>
+    </div>
+    <div class="form-group">
+      <label for="chapter_id">Chapter:</label>
+      <select id="chapter_id" name="chapter_id" required>
+        {% for chapter in chapters %}
+          <option value="{{ chapter.id }}" {% if chapter.id == quiz.chapter_id %}selected{% endif %}>{{ chapter.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="date_of_quiz">Date of Quiz:</label>
+      <input type="date" id="date_of_quiz" name="date_of_quiz" value="{{ quiz.date_of_quiz }}" required>
+    </div>
+    <div class="form-group">
+      <label for="duration">Duration:</label>
+      <input type="text" id="duration" name="duration" value="{{ quiz.duration }}" required>
+    </div>
+    <div class="form-group">
+      <label for="syllabus">Syllabus:</label>
+      <textarea id="syllabus" name="syllabus" required>{{ quiz.syllabus }}</textarea>
+    </div>
+    <div class="form-group">
+      <label for="total_questions">Total Questions:</label>
+      <input type="number" id="total_questions" name="total_questions" value="{{ quiz.total_questions }}" required>
+    </div>
+    <div class="form-group">
+      <label for="maximum_marks">Maximum Marks:</label>
+      <input type="number" id="maximum_marks" name="maximum_marks" value="{{ quiz.maximum_marks }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Quiz</button>
+  </form>
+{% endblock %}

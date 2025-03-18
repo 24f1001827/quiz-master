@@ -5,7 +5,8 @@ class User(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key = True, autoincrement = True) 
     email = db.Column(db.String(64), unique = True, nullable = False) 
     password = db.Column(db.String(128), nullable = False) 
-    username = db.Column(db.String(128),unique = True, nullable = False)
+    username = db.Column(db.String(128),unique = True, nullable = False) 
+    full_name = db.Column(db.String(128), nullable = False)
     role = db.Column(db.String(64), nullable = False)
 
     quiz_attempts = db.relationship('Score', backref = 'user', lazy = True)
@@ -15,7 +16,7 @@ class User(UserMixin,db.Model):
 
 class Subject(db.Model):
     id = db.Column(db.Integer,primary_key = True, autoincrement = True) 
-    name = db.Column(db.String(128), nullable = False) 
+    name = db.Column(db.String(128), unique = True, nullable = False) 
     description = db.Column(db.Text) 
 
     chapters = db.relationship('Chapter', backref = 'subject', lazy = True)
@@ -23,7 +24,7 @@ class Subject(db.Model):
 class Chapter(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True) 
     subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'), nullable = False)
-    name = db.Column(db.String(128),nullable = False) 
+    name = db.Column(db.String(128), unique = True, nullable = False) 
     description = db.Column(db.Text) 
 
     quizzes = db.relationship('Quiz', backref = 'chapter', lazy = True)

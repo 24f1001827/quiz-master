@@ -10,12 +10,13 @@ with app.app_context():
     db.create_all()
     admin = User.query.filter_by(role = 'admin').first()
     if not admin:
-        admin = User(email = 'admin@gmail.com', password = 'admin_123', username = 'Admin', role = 'admin') 
+        admin = User(email = 'admin@gmail.com', password = 'admin_123', username = 'Admin', full_name = 'Ashmit', role = 'admin') 
         db.session.add(admin)
     db.session.commit()
 
 from controller.authorization_routes import *
 from controller.routes import *
+from controller.admin_routes import *
 
 if __name__ == '__main__':
     app.run() 
