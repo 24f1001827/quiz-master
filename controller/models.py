@@ -1,6 +1,7 @@
 from controller.database import db 
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key = True, autoincrement = True) 
     email = db.Column(db.String(64), unique = True, nullable = False) 
     password = db.Column(db.String(128), nullable = False) 
@@ -8,6 +9,9 @@ class User(db.Model):
     role = db.Column(db.String(64), nullable = False)
 
     quiz_attempts = db.relationship('Score', backref = 'user', lazy = True)
+    
+    def get_id(self):   #Required for Flask-Login
+        return str(self.id)
 
 class Subject(db.Model):
     id = db.Column(db.Integer,primary_key = True, autoincrement = True) 
