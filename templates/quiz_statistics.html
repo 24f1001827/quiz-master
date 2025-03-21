@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Quiz Statistics{% endblock %}
+
+{% block content %}
+    <h1 class="display-4">Quiz Statistics: {{ quiz.name }}</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Your Answer</th>
+                        <th>Correct Answer</th>
+                        <th>Marks Scored</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for question in quiz.questions %}
+                        {% set answer = answers|selectattr('question_id', 'equalto', question.id)|first %}
+                        <tr>
+                            <td>{{ question.statement }}</td>
+                            <td>{{ answer.user_answer if answer else 'Not Attempted' }}</td>
+                            <td>{{ question.correct_answer }}</td>
+                            <td>{{ answer.marks_scored if answer else 0 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Quiz Summary</h2>
+            <p>Total Marks: {{ quiz.maximum_marks }}</p>
+            <p>Marks Scored: {{ score.score }}</p>
+            <p>Percentage: {{ (score.score / quiz.maximum_marks) * 100 }}%</p>
+        </div>
+    </div>
+{% endblock %}

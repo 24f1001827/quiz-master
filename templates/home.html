@@ -3,12 +3,9 @@
 
 {% block content %} 
 <div class = "container-fluid row justify-content-center mb-5">
-    {% if current_user.is_authenticated %}
-    <h1>Welcome, {{ current_user.full_name }}</h1>
-    {% else %}
-    <h1>Welcome to the Quiz Master App</h1>
-    <h2>Login/Register</h2> 
-    {% endif %}
+     <h1 style="text-align: center;">Welcome to the Quiz Master App</h1>
+     <a href = "{{ url_for('login') }}" class = "btn btn-primary">Login</a>
+     <a href = "{{ url_for('register') }}" class = "btn btn-primary">Register</a> 
 </div>
 
 {% endblock %}

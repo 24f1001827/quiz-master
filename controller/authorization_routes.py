@@ -92,10 +92,7 @@ def register():
         flash("User registered successfully")
         return redirect(url_for("login"))
     
-@app.route('/{username}/home')
-@login_required
-def user_dashboard():
-    return render_template('user_dashboard.html')
+
 
         
         

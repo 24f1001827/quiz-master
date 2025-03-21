@@ -69,5 +69,5 @@ class Answers(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     attempt_id = db.Column(db.Integer, db.ForeignKey('score.id'), nullable = False) 
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable = False) 
-    user_answer = db.Column(db.String(128), nullable = False) 
-    marks_scored = db.Column(db.Integer, nullable = False) 
+    user_answer = db.Column(db.String(128)) 
+    marks_scored = db.Column(db.Integer, default = 0) 

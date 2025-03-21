@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Attempt Quiz{% endblock %}
+
+{% block content %}
+    <h1 class="display-4">{{ quiz.name }}</h1>
+    <hr>
+    <p>Time remaining: <span id="timer"></span></p>
+    <form id = "myform" action = "/attempt/quiz/{{quiz.id}}" method="post">
+        {% for question in questions %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Question {{ loop.index }}: {{ question.statement }}</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <input type="radio" name="{{ question.id }}" value="{{question.option_a}}" required>
+                            {{ question.option_a }}
+                        </li>
+                        <li class="list-group-item">
+                            <input type="radio" name="{{ question.id }}" value="{{question.option_b}}" required>
+                            {{ question.option_b }}
+                        </li>
+                        <li class="list-group-item">
+                            <input type="radio" name="{{ question.id }}" value="{{question.option_c}}" required>
+                            {{ question.option_c }}
+                        </li>
+                        <li class="list-group-item">
+                            <input type="radio" name="{{ question.id }}" value="{{question.option_d}}" required>
+                            {{ question.option_d }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit Answers</button>
+    </form>
+
+    <script>
+        let durationString = "{{ duration }}" ;
+        let durationParts = durationString.split(":");
+        let hours = parseInt(durationParts[0]);
+        let minutes = parseInt(durationParts[1]);
+        let totalSeconds = hours * 3600 + minutes * 60;
+        let timer = document.getElementById("timer");
+
+        function countdown() {
+            hours = Math.floor(totalSeconds / 3600);
+            minutes = Math.floor((totalSeconds % 3600) / 60);
+            seconds = totalSeconds % 60;
+            timer.textContent = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+            totalSeconds--;
+            if (totalSeconds > 0) {
+                setTimeout(countdown, 1000);
+            } else {
+                console.log("Time's up!");
+                document.getElementById("myform").submit();
+            }
+        }
+
+        countdown();
+    </script>
+{% endblock %}

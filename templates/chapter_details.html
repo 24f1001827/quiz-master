@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Chapter Details{% endblock %}
+
+{% block content %}
+    <h1 class="display-4">{{ chapter.name }}</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Chapter Description</h5>
+                    <p class="card-text">{{ chapter.description }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h2>Quizzes:</h2>
+            <div class="row">
+                {% for quiz in chapter.quizzes %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ quiz.name }}</h5>
+                                {% if quiz.date_of_quiz == current_date %}
+                                    <p class="card-text">Ongoing Quiz - <a href="{{ url_for('attempt_quiz', quiz_id=quiz.id) }}">Attempt Quiz</a></p>
+                                {% elif quiz.date_of_quiz > current_date %}
+                                    <p class="card-text">Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
+                                {% else %}
+                                    <p class="card-text">Completed Quiz - <a href="{{ url_for('quiz_statistics', quiz_id=quiz.id) }}">View Statistics</a></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

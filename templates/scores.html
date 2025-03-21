@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Scores{% endblock %}
+
+{% block content %}
+    <h1 class="display-4">Quiz Scores</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Quiz Name</th>
+                        <th>Score</th>
+                        <th>Max Marks</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for score in scores %}
+                        <tr>
+                            <td>{{ score.quiz.name }}</td>
+                            <td>{{ score.score }}</td>
+                            <td>{{ score.quiz.maximum_marks }}</td>
+                            <td>
+                                <a href="{{ url_for('quiz_statistics', quiz_id=score.quiz.id) }}" class="btn btn-sm btn-outline-secondary">View Statistics</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
