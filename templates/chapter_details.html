@@ -22,12 +22,16 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">{{ quiz.name }}</h5>
-                                {% if quiz.date_of_quiz == current_date %}
-                                    <p class="card-text">Ongoing Quiz - <a href="{{ url_for('attempt_quiz', quiz_id=quiz.id) }}">Attempt Quiz</a></p>
-                                {% elif quiz.date_of_quiz > current_date %}
-                                    <p class="card-text">Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
+                                {% if current_user.role == 'user' %}
+                                    {% if quiz.date_of_quiz == current_date %}
+                                        <p class="card-text">Ongoing Quiz - <a href="{{ url_for('attempt_quiz', quiz_id=quiz.id) }}">Attempt Quiz</a></p>
+                                    {% elif quiz.date_of_quiz > current_date %}
+                                        <p class="card-text">Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
+                                    {% else %}
+                                        <p class="card-text">Completed Quiz - <a href="{{ url_for('quiz_statistics', quiz_id=quiz.id) }}">View Statistics</a></p>
+                                    {% endif %} 
                                 {% else %}
-                                    <p class="card-text">Completed Quiz - <a href="{{ url_for('quiz_statistics', quiz_id=quiz.id) }}">View Statistics</a></p>
+                                    <a href = "{{ url_for('quiz_details', quiz_id = quiz.id) }}" class = "btn btn-primary">View Quiz</a>
                                 {% endif %}
                             </div>
                         </div>

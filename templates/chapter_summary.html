@@ -1,0 +1,84 @@
+<!-- Extend the base template -->
+{% extends "base.html" %}
+
+<!-- Define the content block -->
+{% block content %}
+
+  <!-- Chapter Summary Header -->
+  <div class="container">
+    <h1 class="display-4 text-center mb-4">{{ chapter.name }} Summary</h1>
+  </div>
+
+  <!-- Bar Graph Section -->
+  <canvas id="quiz-attempts-bar-chart" width="400" height="400"></canvas>
+
+  <script>
+    const chartData = {{ chart_data|tojson }};
+    const labels = chartData.map(data => data.label || '');
+    const attempts = chartData.map(data => data.attempts || 0);
+    const averageScores = chartData.map(data => data.average_score || 0);
+    const highestScores = chartData.map(data => data.highest_score || 0);
+    const totalMarks = chartData.map(data => data.total_marks || 0);
+
+    const ctx = document.getElementById('quiz-attempts-bar-chart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Quiz Attempts',
+                data: attempts,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Average Score',
+                data: averageScores,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Highest Score',
+                data: highestScores,
+                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                borderColor: 'rgba(255, 206, 86, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Total Marks',
+                data: totalMarks,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+  </script>
+
+  <!-- Quizzes Grid -->
+  <div class="container mt-5">
+    <div class="row">
+      {% for quiz in quizzes %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ quiz.name }}</h5>
+              <a href="{{ url_for('quiz_details', quiz_id=quiz.id) }}" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+<!-- End the content block -->
+{% endblock %}

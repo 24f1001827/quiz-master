@@ -1,0 +1,79 @@
+<!-- Extend the base table -->
+{% extends "base.html" %}
+
+<!-- Define the content block -->
+{% block content %}
+
+  <!-- Quiz Details Header -->
+  <div class="container">
+    <h1 class="display-4 text-center mb-4">{{ quiz.name }} Details</h1>
+  </div>
+
+  <!-- Questions Table -->
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Question ID</th>
+          <th>Question</th>
+          <th>Not Attempted</th>
+          <th>Attempted</th>
+          <th>Correct Answers</th>
+          <th>Correct Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for question in questions %}
+          <tr>
+            <td>{{ question["id"] }}</td>
+            <td>{{ question["statement"] }}</td>
+            <td>{{ question["not_attempted"] }}</td>
+            <td>{{ question["attempted"] }}</td>
+            <td>{{ question["correct_answers"] }}</td>
+            <td>{{ question["correct_percentage"] }}%</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bar Graph Section -->
+  <canvas id="question-attempts-chart" width="400" height="400"></canvas>
+
+  <script>
+    const chartData = {{ chart_data|tojson }};
+    const labels = chartData.map(data => data.label || '');
+    const attemptPercentages = chartData.map(data => data.attempt_percentage || 0);
+    const correctPercentages = chartData.map(data => data.correct_percentage || 0);
+
+    const ctx = document.getElementById('question-attempts-chart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Attempt Percentage',
+                data: attemptPercentages,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Correct Percentage',
+                data: correctPercentages,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+  </script>
+
+{% endblock %}

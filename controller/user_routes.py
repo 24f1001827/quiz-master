@@ -18,25 +18,43 @@ def user_dashboard(username):
         return redirect(url_for('home'))
     return render_template('user_dashboard.html', user = user, upcoming_quizzes = upcoming_quizzes)
 
+@app.route('/user_profile/<int:user_id>') # URL for the user profile
+@login_required
+def user_profile(user_id):
+    user = User.query.get_or_404(user_id)
+    return render_template('user_profile.html', user=user)
+
+@app.route('/edit_profile/<int:user_id>', methods=['GET', 'POST']) # URL for editing the user profile
+@login_required
+def edit_profile(user_id):
+    if current_user.id != user_id:
+        flash("You are not authorized to view this page", "danger")
+        return redirect(url_for('home'))
+    user = User.query.get_or_404(user_id)
+    if request.method == 'POST':
+        user.email = request.form['email']
+        user.username = request.form['username']
+        user.full_name = request.form['full_name']
+        db.session.commit()
+        flash("Profile updated successfully", "success")
+        return redirect(url_for('user_profile', user_id=user.id))
+    return render_template('edit_profile.html', user=user) 
+
+@app.route('/user_search') 
+@login_required
+def user_search(): # The Search URL for the users 
+    search = request.args.get('search')
+    if search:
+        subjects = Subject.query.filter(Subject.name.like(f'%{search}%')).all()
+        chapters = Chapter.query.filter(Chapter.name.like(f'%{search}%')).all()
+        quizzes = Quiz.query.filter(Quiz.name.like(f'%{search}%')).all()
+        return render_template('search.html', users = None, subjects=subjects, chapters=chapters, quizzes=quizzes) 
+
 @app.route('/subjects')
 @login_required
-def subjects():
+def subjects(): # URL for displaying all the subjects
     subjects = Subject.query.all()
-    return render_template('subjects.html', subjects=subjects)
-
-@app.route('/subject/<int:subject_id>')
-@login_required
-def subject_details(subject_id):
-    subject = Subject.query.get_or_404(subject_id)
-    return render_template('subject_details.html', subject=subject) #Create the subject_details.html template
-
-@app.route('/chapter/<int:chapter_id>')
-@login_required
-def chapter_details(chapter_id):
-    chapter = Chapter.query.get_or_404(chapter_id)
-    quizzes = chapter.quizzes 
-    current_date = datetime.today().date()
-    return render_template('chapter_details.html', chapter=chapter, quizzes=quizzes, current_date=current_date) 
+    return render_template('subjects.html', subjects=subjects) 
 
 @app.route('/scores')
 @login_required
@@ -49,12 +67,14 @@ def scores():
 def quiz_statistics(quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
     score = Score.query.filter_by(user_id=current_user.id, quiz_id=quiz_id).first()
-    answers = Answers.query.filter_by(attempt_id = score.id).all()
+    answers = None
+    if score:
+        answers = Answers.query.filter_by(attempt_id=score.id).all() 
     return render_template('quiz_statistics.html', quiz=quiz, score=score, answers=answers)
 
 @app.route('/attempt/quiz/<int:quiz_id>', methods=['GET', 'POST']) # URL for attempting a quiz
 @login_required
-def attempt_quiz(quiz_id):
+def attempt_quiz(quiz_id): 
     quiz = Quiz.query.get_or_404(quiz_id)
     questions = quiz.questions
     duration = quiz.duration 

@@ -1,11 +1,19 @@
-{% extends 'base.html' %} 
-{% block title %} Home {% endblock %} 
+{% extends 'base.html' %}
 
-{% block content %} 
-<div class = "container-fluid row justify-content-center mb-5">
-     <h1 style="text-align: center;">Welcome to the Quiz Master App</h1>
-     <a href = "{{ url_for('login') }}" class = "btn btn-primary">Login</a>
-     <a href = "{{ url_for('register') }}" class = "btn btn-primary">Register</a> 
-</div>
+{% block title %} Home {% endblock %}
 
+{% block content %}
+  <div class="container-fluid" style="background-color: #212529; height: 100vh; color: #ffffff;">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-md-6 text-center">
+        <h1 class="display-4 font-weight-bold" style="color: #4CAF50;">Unlock Your Potential!</h1>
+        <h2 class="display-5" style="color: #8BC34A;">Take the Quiz Master Challenge and Discover Your Strengths!</h2>
+        <p class="lead" style="color: #BDC3C7;">Test your knowledge, compete with others, and climb the leaderboard!</p>
+        <div class="mt-4">
+          <a href="{{ url_for('register') }}" class="btn btn-success btn-lg" style="background-color: #8BC34A; border-color: #8BC34A; color: #ffffff;">Sign Up</a>
+          <p class="text-muted mt-2" style="color: #FFC107 !important;">Already an existing user? <a href="{{ url_for('login') }}" style="color: #4CAF50;">Login</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

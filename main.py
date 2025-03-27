@@ -5,7 +5,6 @@ from controller.models import *
 app = Flask(__name__, template_folder='templates', static_folder='static') 
 app.config.from_object(Config)
 db.init_app(app) 
-
 with app.app_context():
     db.create_all()
     admin = User.query.filter_by(role = 'admin').first()
@@ -18,6 +17,8 @@ from controller.authorization_routes import *
 from controller.routes import *
 from controller.admin_routes import *
 from controller.user_routes import *
+from controller.admin_summary_routes import *
+from controller.user_summary_routes import *
 
 if __name__ == '__main__':
     app.run() 

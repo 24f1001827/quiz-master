@@ -1,6 +1,25 @@
 {% extends "base.html" %} 
 {% block title %} Admin {% endblock %} 
 
-{% block content %} 
+{% block content %}  
 <h1> Welcome Admin </h1>
+<h2>Quizzes:</h2>
+    <div class="row">
+    {% for quiz in quizzes %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ quiz.name }}</h5>
+                    {% if quiz.date_of_quiz == current_date %}
+                    <p class="card-text">Ongoing Quiz </p>
+                    {% elif quiz.date_of_quiz > current_date %}
+                    <p class="card-text">Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
+                    {% else %}
+                    <p class="card-text">Completed Quiz - <a href="{{ url_for('quiz_summary', quiz_id=quiz.id) }}">View Statistics</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
 {% endblock %}

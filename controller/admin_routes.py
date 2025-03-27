@@ -4,12 +4,30 @@ from main import app
 from controller.models import * 
 from datetime import datetime
 
-@app.route('/admin_dashboard')
+
+@app.route('/admin_dashboard') #URL for ADMIN DASHBOARD
 @login_required
 def admin_dashboard():
     if current_user.role != 'admin':
         return redirect(url_for('home'))
-    return render_template('admin_dashboard.html')
+    quizzes = Quiz.query.all()   
+    current_date = datetime.today().date() 
+    return render_template('admin_dashboard.html', quizzes=quizzes, current_date=current_date)
+    
+@app.route('/admin_search') #URL for ADMIN SEARCH
+def admin_search():
+    if current_user.role != 'admin':
+        return redirect(url_for('home'))
+    search = request.args.get('search')
+    if search:
+        users = User.query.filter(User.username.like(f'%{search}%')).all()
+        subjects = Subject.query.filter(Subject.name.like(f'%{search}%')).all()
+        chapters = Chapter.query.filter(Chapter.name.like(f'%{search}%')).all()
+        quizzes = Quiz.query.filter(Quiz.name.like(f'%{search}%')).all()
+        questions = Question.query.filter(Question.statement.like(f'%{search}%')).all()
+
+        return render_template('search.html', users=users , subjects=subjects, chapters=chapters, quizzes=quizzes, questions=questions) 
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/manage_users')
 @login_required
@@ -299,5 +317,7 @@ def delete_question(question_id):
     db.session.delete(question)
     db.session.commit()
     flash('Question deleted successfully!')
-    return redirect(url_for('manage_questions'))
+    return redirect(url_for('manage_questions')) 
+
+
 

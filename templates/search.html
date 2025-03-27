@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+{% if users %}
+    <h2>Users</h2>
+    <ul>
+    {% for user in users %}
+        <li>{{ user.username }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if subjects %}
+    <h2>Subjects</h2>
+    <ul>
+    {% for subject in subjects %}
+        <li><a href = "{{url_for('subject_details', subject_id = subject.id)}}">{{ subject.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if chapters %}
+    <h2>Chapters</h2>
+    <ul>
+    {% for chapter in chapters %}
+        <li><a href = "{{url_for('chapter_details', chapter_id = chapter.id)}}"> {{chapter.name}}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if quizzes %}
+    <h2>Quizzes</h2>
+    <ul>
+    {% for quiz in quizzes %}
+        <li> <a href = "{{url_for('quiz_details', quiz_id = quiz.id)}}"> {{ quiz.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}  
+
+{% if not users and not subjects and not chapters and not quizzes %}
+    <h2>No results found. Check for spelling mistakes</h2>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

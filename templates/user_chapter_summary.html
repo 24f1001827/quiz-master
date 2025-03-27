@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="display-4 text-center mb-4">{{ chapter.name }} Summary</h1>
+    </div>
+    <canvas id="quiz-scores-line-chart" width="400" height="400"></canvas>
+    <script>
+        const chartData = {{ chart_data|tojson }};
+        const labels = chartData.map(data => data.label || '');
+        const scores = chartData.map(data => data.percentage_score || 0);
+        const percentage_averageScores = chartData.map(data => data.percentage_average_score || 0);
+        const ctx = document.getElementById('quiz-scores-line-chart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Quiz Scores',
+                    data: averageScores,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }
+                ,{
+                    label: 'Average Scores',
+                    data: percentage_averageScores,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

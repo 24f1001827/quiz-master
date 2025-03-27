@@ -1,0 +1,35 @@
+{% extends 'base.html' %} 
+
+{% block title %} Quiz details: {{quiz.name}} {% endblock %} 
+
+{% block content %}
+
+<h2 class = "text-center"> {{quiz.name}}</h2> 
+<hr>
+<h3 class = "text-center"> Syllabus: {{quiz.syllabus}}</h3> 
+<h3 class = "text-center"> Total questions : {{ questions | length }}</h3>
+<h3 class = "text-center"> Total marks : {{ quiz.maximum_marks }}</h3>
+{% if current_user.is_authenticated %} 
+    {% if current_user.role == 'admin' %}
+        {% if quiz.date_of_quiz == current_date %}
+        <p>Ongoing Quiz </p>
+        {% elif quiz.date_of_quiz > current_date %}
+        <p>Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
+        {% else %}
+        <p>Completed Quiz - <a href="{{ url_for('quiz_summary', quiz_id=quiz.id) }}">View Statistics</a></p>
+        {% endif %} 
+        <a href = "{{url_for('edit_quiz', quiz_id = quiz.id)}}" class="btn btn-primary"> Edit Quiz </a>
+    {% else %}
+        {% if quiz.date_of_quiz == current_date %}
+        <p>Ongoing Quiz <a href = "{{url_for('attempt_quiz', quiz_id = quiz.id)}}"> Attempt Quiz</a> </p>
+        {% elif quiz.date_of_quiz > current_date %}
+        <p>Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
+        {% else %}
+        <p>Completed Quiz - <a href="{{ url_for('quiz_statistics', quiz_id=quiz.id) }}">View Statistics</a></p>
+        {% endif %} 
+    {% endif %} 
+{% else %}
+    <h1>NOT AUTHORIZED TO VIEW THIS!</h1> 
+{% endif %}
+
+{% endblock %}

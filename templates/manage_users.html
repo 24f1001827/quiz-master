@@ -20,9 +20,13 @@
           <td>{{ user.id }}</td>
           <td>{{ user.full_name }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.username }}</td>
+          <td><a href = "{{ url_for(user_profile, user_id = user.id) }}" >{{ user.username }} </a></td>
         </tr>
         {% endif %}
+      {% empty %}
+        <tr>
+          <td colspan="4">No users to display</td>
+        </tr>
       {% endfor %}
     </tbody>
   </table>

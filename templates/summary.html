@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+<!-- Define the content block -->
+{% block content %}
+
+  <!-- Summary Header -->
+  <div class="container">
+    <h1 class="display-4 text-center">Summary</h1>
+    <p class="text-center">Get insights into your quiz performance</p>
+  </div>
+
+  <!-- Subjects Grid -->
+  <div class="container">
+    <div class="row">
+      {% for subject in subjects %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ subject.name }}</h5>
+              <p class="card-text">{{ subject.description }}</p>
+              <a href="{{ url_for('subject_summary', subject_id=subject.id) }}" class="btn btn-primary">View Summary</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+<!-- End the content block -->
+{% endblock %}

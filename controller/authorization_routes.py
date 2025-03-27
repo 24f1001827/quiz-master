@@ -39,6 +39,8 @@ def login():
         
         if user and user.password == password:
             login_user(user)
+            current_user.last_login = datetime.now()
+            db.session.commit()
             flash('You have been logged in!', 'success')
             if user.role == 'admin':
                 return redirect(url_for('admin_dashboard')) 
@@ -48,6 +50,7 @@ def login():
         
         
 @app.route('/logout')
+@login_required
 def logout():
     if not current_user.is_authenticated:
         flash("You are not logged in.", "info")  # If the user is not logged in

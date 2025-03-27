@@ -1,5 +1,6 @@
 from controller.database import db 
 from flask_login import UserMixin
+from datetime import datetime
 
 class User(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key = True, autoincrement = True) 
@@ -8,6 +9,9 @@ class User(UserMixin,db.Model):
     username = db.Column(db.String(128),unique = True, nullable = False) 
     full_name = db.Column(db.String(128), nullable = False)
     role = db.Column(db.String(64), nullable = False)
+    created_at = db.Column(db.DateTime, default = datetime.now)
+    updated_at = db.Column(db.DateTime, default = datetime.now, onupdate = datetime.now)
+    last_login = db.Column(db.DateTime, default = datetime.now)
 
     quiz_attempts = db.relationship('Score', backref = 'user', lazy = True)
     
