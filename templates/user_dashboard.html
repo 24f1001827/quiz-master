@@ -18,7 +18,7 @@
                                     <span class="badge badge-warning">Today</span>
                                     {% if quiz.id in attempted_quizzes %}
                                         <p class="text-muted">Attempted</p>
-                                        <a href="{{ url_for('quiz_statistics', quiz_id=quiz.id) }}" class="btn btn-primary float-right">View Statistics</a>
+                                        <a href="{{ url_for('quiz_statistics', user_id = current_user.id, quiz_id=quiz.id) }}" class="btn btn-primary float-right">View Statistics</a>
                                     {% else %}
                                         <a href="{{ url_for('attempt_quiz', quiz_id=quiz.id) }}" class="btn btn-primary float-right">Attempt Quiz</a>
                                     {% endif %}

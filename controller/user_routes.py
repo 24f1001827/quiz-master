@@ -67,11 +67,11 @@ def scores():
     scores = Score.query.filter_by(user_id=current_user.id).all()
     return render_template('scores.html', scores=scores)
 
-@app.route('/quiz/statistics/<int:quiz_id>') # URL for the quiz statistics
+@app.route('/quiz/statistics/<int:user_id>/<int:quiz_id>') # URL for the quiz statistics
 @login_required
-def quiz_statistics(quiz_id):
+def quiz_statistics(user_id,quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
-    score = Score.query.filter_by(user_id=current_user.id, quiz_id=quiz_id).first()
+    score = Score.query.filter_by(user_id=user_id, quiz_id=quiz_id).first()
     user = User.query.get_or_404(current_user.id)
     answers = None
     if score:
@@ -113,7 +113,7 @@ def attempt_quiz(quiz_id):
                     db.session.add(answer)
 
             db.session.commit()
-            return redirect(url_for('quiz_statistics', quiz_id=quiz_id))
+            return redirect(url_for('quiz_statistics', quiz_id=quiz_id, user_id=current_user.id))
         else:
             score = Score(user_id=current_user.id, quiz_id=quiz_id)
             db.session.add(score)
@@ -130,10 +130,10 @@ def attempt_quiz(quiz_id):
                     else:
                         answer.marks_scored = 0
 
-                db.session.add(answer)
+                db.session.add(answer) 
 
             db.session.commit()
-            return redirect(url_for('quiz_statistics', quiz_id=quiz_id))
+            return redirect(url_for('quiz_statistics', quiz_id=quiz_id, user_id=current_user.id))
 
     return render_template('attempt_quiz.html', quiz=quiz, questions=questions, duration=duration)
 

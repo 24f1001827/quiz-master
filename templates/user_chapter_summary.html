@@ -6,7 +6,9 @@
     <div class="container">
         <h1 class="display-4 text-center mb-4">{{ chapter.name }} Summary</h1>
     </div>
-    <canvas id="quiz-scores-line-chart" width="400" height="400"></canvas>
+    <div class="chart-container mb-3" style="width: 100%; height: 400px;">
+        <canvas id="quiz-scores-line-chart" style="width: 100%; height: 100%;"></canvas>
+    </div>
     <script>
         const chartData = {{ chart_data|tojson }};
         const labels = chartData.map(data => data.label || '');

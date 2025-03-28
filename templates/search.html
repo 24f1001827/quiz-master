@@ -13,7 +13,7 @@
             <h2 class="mb-3">Users</h2>
             <ul class="list-group">
               {% for user in users %}
-                <li class="list-group-item">{{ user.username }}</li>
+                <li class="list-group-item"><h4>{{ user.username }}</h4></li>
               {% endfor %}
             </ul>
           </div>
@@ -25,7 +25,7 @@
             <ul class="list-group">
               {% for subject in subjects %}
                 <li class="list-group-item">
-                  <a href="{{ url_for('subject_details', subject_id=subject.id) }}">{{ subject.name }}</a>
+                  <a href="{{ url_for('subject_details', subject_id=subject.id) }}" ><h4>{{ subject.name }}</h4></a>
                 </li>
               {% endfor %}
             </ul>
@@ -38,7 +38,7 @@
             <ul class="list-group">
               {% for chapter in chapters %}
                 <li class="list-group-item">
-                  <a href="{{ url_for('chapter_details', chapter_id=chapter.id) }}">{{ chapter.name }}</a>
+                  <a href="{{ url_for('chapter_details', chapter_id=chapter.id) }}"><h4>{{ chapter.name }}</h4></a>
                 </li>
               {% endfor %}
             </ul>
@@ -51,7 +51,7 @@
             <ul class="list-group">
               {% for quiz in quizzes %}
                 <li class="list-group-item">
-                  <a href="{{ url_for('quiz_details', quiz_id=quiz.id) }}">{{ quiz.name }}</a>
+                  <a href="{{ url_for('quiz_details', quiz_id=quiz.id) }}"><h4>{{ quiz.name }}</h4></a>
                 </li>
               {% endfor %}
             </ul>

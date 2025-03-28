@@ -23,7 +23,7 @@
                             <td>{{ score.score }}</td>
                             <td>{{ score.quiz.maximum_marks }}</td>
                             <td>
-                                <a href="{{ url_for('quiz_statistics', quiz_id=score.quiz.id) }}" class="btn btn-sm btn-outline-secondary">View Statistics</a>
+                                <a href="{{ url_for('quiz_statistics', user_id = current_user.id, quiz_id=score.quiz.id) }}" class="btn btn-sm btn-outline-secondary">View Statistics</a>
                             </td>
                         </tr>
                     {% endfor %}

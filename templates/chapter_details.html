@@ -28,7 +28,7 @@
                                     {% elif quiz.date_of_quiz > current_date %}
                                         <p class="card-text">Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
                                     {% else %}
-                                        <p class="card-text">Completed Quiz - <a href="{{ url_for('quiz_statistics', quiz_id=quiz.id) }}">View Statistics</a></p>
+                                        <p class="card-text">Completed Quiz - <a href="{{ url_for('quiz_statistics', user_id = current_user.id, quiz_id=quiz.id) }}">View Statistics</a></p>
                                     {% endif %} 
                                 {% else %}
                                     <a href = "{{ url_for('quiz_details', quiz_id = quiz.id) }}" class = "btn btn-primary">View Quiz</a>

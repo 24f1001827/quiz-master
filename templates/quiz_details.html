@@ -25,7 +25,7 @@
         {% elif quiz.date_of_quiz > current_date %}
         <p>Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
         {% else %}
-        <p>Completed Quiz - <a href="{{ url_for('quiz_statistics', quiz_id=quiz.id) }}">View Statistics</a></p>
+        <p>Completed Quiz - <a href="{{ url_for('quiz_statistics', user_id = current_user.id,quiz_id=quiz.id) }}">View Statistics</a></p>
         {% endif %} 
     {% endif %} 
 {% else %}

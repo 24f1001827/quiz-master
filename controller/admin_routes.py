@@ -9,7 +9,7 @@ from datetime import datetime
 @login_required
 def admin_dashboard():
     if current_user.role != 'admin':
-        flash('You are not authorized to view this page!')
+        flash('You are not authorized to view this page!', 'danger')
         return redirect(url_for('home'))
     quizzes = Quiz.query.all()   
     current_date = datetime.today().date() 
@@ -18,7 +18,7 @@ def admin_dashboard():
 @app.route('/admin_search') #URL for ADMIN SEARCH
 def admin_search():
     if current_user.role != 'admin':
-        flash('You are not authorized to view this page!')
+        flash('You are not authorized to view this page!', 'danger')
         return redirect(url_for('home'))
     search = request.args.get('search')
     if search:
@@ -35,7 +35,7 @@ def admin_search():
 @login_required
 def manage_users():
     if current_user.role != 'admin':
-        flash('You are not authorized to view this page!')
+        flash('You are not authorized to view this page!', 'danger')
         return redirect(url_for('home'))
     users = User.query.all()
     return render_template('manage_users.html', users=users)
@@ -44,7 +44,7 @@ def manage_users():
 @login_required
 def delete_user(user_id):
     if current_user.role != 'admin':
-        flash('You are not authorized to delete users!')
+        flash('You are not authorized to delete users!', 'danger')
         return redirect(url_for('home')) 
     user = User.query.get_or_404(user_id) 
     for attempt in user.quiz_attempts:
@@ -53,7 +53,7 @@ def delete_user(user_id):
             db.session.delete(answers)
     db.session.delete(user) 
     db.session.commit()
-    flash('User deleted successfully!')
+    flash('User deleted successfully!', 'success')
     return redirect(url_for('manage_users'))
 
       
@@ -62,7 +62,7 @@ def delete_user(user_id):
 @login_required
 def manage_subjects():
     if current_user.role != 'admin':
-        flash('You are not authorized to view this page!')
+        flash('You are not authorized to view this page!', 'danger')
         return redirect(url_for('home'))
     subjects = Subject.query.all()
     return render_template('manage_subjects.html', subjects=subjects)
@@ -71,7 +71,7 @@ def manage_subjects():
 @login_required
 def add_subject():
     if current_user.role != 'admin':
-        flash('You are not authorized to add subjects!')
+        flash('You are not authorized to add subjects!', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         return render_template('add_subject.html') 
@@ -80,19 +80,19 @@ def add_subject():
         description = request.form['description']
         subject = Subject.query.filter_by(name=name).first()
         if subject:
-            flash('Subject already exists!')
+            flash('Subject already exists!', 'warning')
             return redirect(url_for('manage_subjects')) 
         subject = Subject(name=name, description=description)
         db.session.add(subject)
         db.session.commit()
-        flash('Subject added successfully!')
+        flash('Subject added successfully!', 'success')
         return redirect(url_for('manage_subjects'))
 
 @app.route('/edit_subject/<int:subject_id>', methods=['GET','POST']) 
 @login_required
 def edit_subject(subject_id):
     if current_user.role != 'admin':
-        flash('You are not authorized to edit subjects!')
+        flash('You are not authorized to edit subjects!', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         return render_template('edit_subject.html', subject=Subject.query.get_or_404(subject_id))
@@ -101,14 +101,14 @@ def edit_subject(subject_id):
         subject.name = request.form['name']
         subject.description = request.form['description']
         db.session.commit()
-        flash('Subject updated successfully!')
+        flash('Subject updated successfully!', 'success')
         return redirect(url_for('manage_subjects'))
 
 @app.route('/delete_subject/<int:subject_id>')
 @login_required
 def delete_subject(subject_id):
     if current_user.role != 'admin':
-        flash('You are not authorized to delete subjects!')
+        flash('You are not authorized to delete subjects!', 'danger')
         return redirect(url_for('home'))
     subject = Subject.query.get_or_404(subject_id)
     for chapter in subject.chapters:
@@ -124,7 +124,7 @@ def delete_subject(subject_id):
         db.session.delete(chapter)
     db.session.delete(subject)
     db.session.commit()
-    flash('Subject deleted successfully!')
+    flash('Subject deleted successfully!', 'success')
     return redirect(url_for('manage_subjects'))
 
 # Manage Chapters
@@ -132,7 +132,7 @@ def delete_subject(subject_id):
 @login_required
 def manage_chapters():
     if current_user.role != 'admin':
-        flash('You are not authorized to view this page!')
+        flash('You are not authorized to view this page!', 'danger')
         return redirect(url_for('home'))
     chapters = Chapter.query.all()
     subjects = Subject.query.all()
@@ -143,12 +143,12 @@ def manage_chapters():
 @login_required
 def add_chapter(subject_id=None):
     if current_user.role != 'admin':
-        flash('You are not authorized to add chapters!')
+        flash('You are not authorized to add chapters!', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         subjects = Subject.query.all()
         if not subjects:
-            flash('No subjects found! Please add a subject first.')
+            flash('No subjects found! Please add a subject first.', 'warning')
             return redirect(url_for('manage_chapters'))
         if subject_id:
             subject = Subject.query.get_or_404(subject_id)
@@ -159,7 +159,7 @@ def add_chapter(subject_id=None):
         
         chapter = Chapter.query.filter_by(name=request.form['name']).first()
         if chapter:
-            flash('Chapter already exists!')
+            flash('Chapter already exists!', 'warning')
             return redirect(url_for('manage_chapters'))
         
         subject = Subject.query.get_or_404(request.form['subject_id'])
@@ -168,14 +168,14 @@ def add_chapter(subject_id=None):
         chapter = Chapter(name=name, description=description, subject=subject)
         db.session.add(chapter)
         db.session.commit()
-        flash('Chapter added successfully!')
+        flash('Chapter added successfully!', 'success')
         return redirect(url_for('manage_chapters'))
 
 @app.route('/edit_chapter/<int:chapter_id>', methods=['GET','POST'])
 @login_required
 def edit_chapter(chapter_id):
     if current_user.role != 'admin':
-        flash('You are not authorized to edit chapters!')
+        flash('You are not authorized to edit chapters!', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         chapter = Chapter.query.get_or_404(chapter_id)
@@ -188,14 +188,14 @@ def edit_chapter(chapter_id):
         chapter.name = request.form['name']
         chapter.description = request.form['description']
         db.session.commit()
-        flash('Chapter updated successfully!')
+        flash('Chapter updated successfully!', 'success')
         return redirect(url_for('manage_chapters'))
 
 @app.route('/delete_chapter/<int:chapter_id>')
 @login_required
 def delete_chapter(chapter_id):
     if current_user.role != 'admin':
-        flash('You are not authorized to delete chapters!')
+        flash('You are not authorized to delete chapters!', 'danger')
         return redirect(url_for('home'))
     chapter = Chapter.query.get_or_404(chapter_id)
     for quiz in chapter.quizzes:
@@ -209,7 +209,7 @@ def delete_chapter(chapter_id):
         db.session.delete(quiz)
     db.session.delete(chapter)
     db.session.commit()
-    flash('Chapter deleted successfully!')
+    flash('Chapter deleted successfully!', 'success')
     return redirect(url_for('manage_chapters'))
 
 # Manage Quizzes
@@ -217,7 +217,7 @@ def delete_chapter(chapter_id):
 @login_required
 def manage_quizzes():
     if current_user.role != 'admin':
-        flash('You are not authorized to view this page!')
+        flash('You are not authorized to view this page!', 'danger')
         return redirect(url_for('home'))
     quizzes = Quiz.query.all()
     chapters = Chapter.query.all() 
@@ -229,12 +229,12 @@ def manage_quizzes():
 @login_required
 def add_quiz(chapter_id=None):
     if current_user.role != 'admin':
-        flash('You are not authorized to add quizzes!')
+        flash('You are not authorized to add quizzes!', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         chapters = Chapter.query.all()
         if not chapters:
-            flash('No chapters found! Please add a chapter first.')
+            flash('No chapters found! Please add a chapter first.', 'warning')
             return redirect(url_for('manage_quizzes'))
         if chapter_id:
             chapter = Chapter.query.get_or_404(chapter_id)
@@ -244,7 +244,7 @@ def add_quiz(chapter_id=None):
     else:
         quiz = Quiz.query.filter_by(name=request.form['name']).first()
         if quiz:
-            flash('Quiz already exists!')
+            flash('Quiz already exists!', 'warning')
             return redirect(url_for('manage_quizzes'))
         chapter = Chapter.query.get_or_404(request.form['chapter_id'])
         name = request.form['name']
@@ -256,14 +256,14 @@ def add_quiz(chapter_id=None):
         quiz = Quiz(name=name, date_of_quiz=date_of_quiz, duration=duration, syllabus=syllabus, total_questions=total_questions, maximum_marks=maximum_marks, chapter=chapter)
         db.session.add(quiz)
         db.session.commit()
-        flash('Quiz added successfully!')
+        flash('Quiz added successfully!', 'success')
         return redirect(url_for('manage_quizzes'))
     
 @app.route('/edit_quiz/<int:quiz_id>', methods=['GET','POST'])
 @login_required
 def edit_quiz(quiz_id):
     if current_user.role != 'admin':
-        flash('You are not authorized to edit quizzes!')
+        flash('You are not authorized to edit quizzes!', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         quiz = Quiz.query.get_or_404(quiz_id)
@@ -279,26 +279,26 @@ def edit_quiz(quiz_id):
         quiz.total_questions = request.form['total_questions']
         quiz.maximum_marks = request.form['maximum_marks']
         db.session.commit()
-        flash('Quiz updated successfully!')
+        flash('Quiz updated successfully!', 'success')
         return redirect(url_for('manage_quizzes'))
 
 @app.route('/delete_quiz/<int:quiz_id>')
 @login_required
 def delete_quiz(quiz_id):
     if current_user.role != 'admin':
-        flash('You are not authorized to delete quizzes!')
+        flash('You are not authorized to delete quizzes!', 'danger')
         return redirect(url_for('home')) 
     quiz = Quiz.query.get_or_404(quiz_id)
     for attempt in quiz.quiz_attempts:
         for answers in attempt.answers:
             db.session.delete(answers)
         db.session.delete(attempt)
-        
+
     for question in quiz.questions:
         db.session.delete(question)
     db.session.delete(quiz)
     db.session.commit()
-    flash('Quiz deleted successfully!')
+    flash('Quiz deleted successfully!', 'success')
     return redirect(url_for('manage_quizzes'))
 
 # Manage Questions
@@ -306,7 +306,7 @@ def delete_quiz(quiz_id):
 @login_required
 def manage_questions():
     if current_user.role != 'admin':
-        flash('You are not authorized to view this page!')
+        flash('You are not authorized to view this page!', 'danger')
         return redirect(url_for('home'))
     questions = Question.query.all()
     quizzes = Quiz.query.all()
@@ -317,12 +317,12 @@ def manage_questions():
 @login_required
 def add_question(quiz_id=None):
     if current_user.role != 'admin':
-        flash('You are not authorized to add questions!')
+        flash('You are not authorized to add questions!', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         quizzes = Quiz.query.all()
         if not quizzes:
-            flash('No quizzes found! Please add a quiz first.')
+            flash('No quizzes found! Please add a quiz first.', 'warning')
             return redirect(url_for('manage_questions'))
         if quiz_id:
             quiz = Quiz.query.get_or_404(quiz_id)
@@ -332,7 +332,7 @@ def add_question(quiz_id=None):
     else:
         question = Question.query.filter_by(statement=request.form['statement']).first()
         if question:
-            flash('Question already exists!')
+            flash('Question already exists!', 'warning')
             return redirect(url_for('manage_questions'))
         quiz = Quiz.query.get_or_404(request.form['quiz_id'])
         statement = request.form['statement']
@@ -345,14 +345,14 @@ def add_question(quiz_id=None):
         question = Question(statement=statement, option_a=option_a, option_b=option_b, option_c=option_c, option_d=option_d, correct_answer=correct_answer, marks=marks, quiz=quiz)
         db.session.add(question)
         db.session.commit()
-        flash('Question added successfully!')
+        flash('Question added successfully!', 'success')
         return redirect(url_for('manage_questions'))
     
 @app.route('/edit_question/<int:question_id>', methods=['GET','POST'])
 @login_required
 def edit_question(question_id):
     if current_user.role != 'admin':
-        flash('You are not authorized to edit questions!')
+        flash('You are not authorized to edit questions!', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         question = Question.query.get_or_404(question_id)
@@ -369,19 +369,19 @@ def edit_question(question_id):
         question.correct_answer = request.form['correct_answer']
         question.marks = request.form['marks']
         db.session.commit()
-        flash('Question updated successfully!')
+        flash('Question updated successfully!', 'success')
         return redirect(url_for('manage_questions'))
 
 @app.route('/delete_question/<int:question_id>')
 @login_required
 def delete_question(question_id):
     if current_user.role != 'admin':
-        flash('You are not authorized to delete questions!')
+        flash('You are not authorized to delete questions!', 'danger')
         return redirect(url_for('home'))
     question = Question.query.get_or_404(question_id)
     db.session.delete(question)
     db.session.commit()
-    flash('Question deleted successfully!')
+    flash('Question deleted successfully!', 'success')
     return redirect(url_for('manage_questions')) 
 
 

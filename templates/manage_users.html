@@ -1,41 +1,46 @@
 {% extends 'base.html' %}
 
-{% block title %}Manage Users{% endblock %}
+{% block title %} Manage Users {% endblock %}
 
 {% block content %}
-  <h1>Manage Users</h1>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Username</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% if users %}
-        {% for user in users %}
-          {% if user.role != 'admin' %}
+  <div class="container mt-5">
+    <h1 class="display-4 text-center">Manage Users</h1>
+    <hr>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead class="thead-dark">
           <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.full_name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.username }} </a></td>
-            <td>
-              <a href = "{{ url_for('user_profile', user_id = user.id) }}" class="btn btn-primary"> View Profile </a>
-              <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-danger">Remove account </a>
-              <a href="{{ url_for('user_summary', user_id=user.id) }}" class="btn btn-primary">View Performance</a>
-            </td>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Actions</th>
           </tr>
-          {% endif %} 
-        {% endfor %}
-      {% else %}
-        <tr>
-          <td colspan="5">No users found</td>
-        </tr>
-      {% endif %}
-    </tbody>
-  </table>
+        </thead>
+        <tbody>
+          {% if users %}
+            {% for user in users %}
+              {% if user.role != 'admin' %}
+                <tr>
+                  <td>{{ user.id }}</td>
+                  <td>{{ user.full_name }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.username }}</td>
+                  <td>
+                    <a href="{{ url_for('user_profile', user_id=user.id) }}" class="btn btn-primary btn-sm">View Profile</a>
+                    <a href="{{ url_for('delete_user', user_id=user.id) }}" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger btn-sm">Remove Account</a>
+                    <a href="{{ url_for('user_summary', user_id=user.id) }}" class="btn btn-primary btn-sm">View Performance</a>
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="5">No users found</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock %}
