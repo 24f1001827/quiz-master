@@ -11,23 +11,31 @@
         <th>Name</th>
         <th>Email</th>
         <th>Username</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      {% for user in users %}
-        {% if user.role != 'admin' %}
+      {% if users %}
+        {% for user in users %}
+          {% if user.role != 'admin' %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.username }} </a></td>
+            <td>
+              <a href = "{{ url_for('user_profile', user_id = user.id) }}" class="btn btn-primary"> View Profile </a>
+              <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-danger">Remove account </a>
+              <a href="{{ url_for('user_summary', user_id=user.id) }}" class="btn btn-primary">View Performance</a>
+            </td>
+          </tr>
+          {% endif %} 
+        {% endfor %}
+      {% else %}
         <tr>
-          <td>{{ user.id }}</td>
-          <td>{{ user.full_name }}</td>
-          <td>{{ user.email }}</td>
-          <td><a href = "{{ url_for(user_profile, user_id = user.id) }}" >{{ user.username }} </a></td>
+          <td colspan="5">No users found</td>
         </tr>
-        {% endif %}
-      {% empty %}
-        <tr>
-          <td colspan="4">No users to display</td>
-        </tr>
-      {% endfor %}
+      {% endif %}
     </tbody>
   </table>
 {% endblock %}

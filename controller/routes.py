@@ -10,7 +10,7 @@ def home():
         if current_user.role == 'admin':
             return redirect(url_for('admin_dashboard'))
         else:
-            return redirect(url_for('user_dashboard', username = current_user.username))
+            return redirect(url_for('user_dashboard', user_id = current_user.id))
     else:
          return render_template("home.html") 
     

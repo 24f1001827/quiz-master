@@ -45,7 +45,7 @@ def login():
             if user.role == 'admin':
                 return redirect(url_for('admin_dashboard')) 
             else:
-                return redirect(url_for('user_dashboard', username = user.username))
+                return redirect(url_for('user_dashboard', user_id = user.id))
             
         
         

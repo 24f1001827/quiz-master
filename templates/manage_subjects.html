@@ -3,32 +3,41 @@
 {% block title %} Manage Subjects {% endblock %}
 
 {% block content %}
-  <h1>Manage Subjects</h1>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Subject</th>
-        <th>Chapters</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for subject in subjects %}
-        <tr>
-          <td>{{ subject.name }}</td>
-          <td>
-            {% for chapter in subject.chapters %}
-              {{ chapter.name }}<br>
-            {% endfor %}
-          </td>
-          <td>
-            <a href="{{ url_for('edit_subject', subject_id=subject.id) }}" class="btn btn-primary">Edit</a>
-            <a href="{{ url_for('delete_subject', subject_id=subject.id) }}" class="btn btn-danger">Delete</a>
-            <a href="{{ url_for('add_chapter', subject_id=subject.id) }}" class="btn btn-success">Add Chapter</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <a href="{{ url_for('add_subject') }}" class="btn btn-success">Add Subject</a>
+  <div class="container-fluid mt-5">
+    <h1 class="display-4 text-center">Manage Subjects</h1>
+    <hr>
+    <div class = "table-responsive">
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Subject</th>
+            <th>Chapters</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for subject in subjects %}
+            <tr>
+              <td>{{ subject.name }}</td>
+              <td>
+                <ul>
+                  {% for chapter in subject.chapters %}
+                    <li>{{ chapter.name }}</li>
+                  {% endfor %}
+                </ul>
+              </td>
+              <td>
+                <a href="{{ url_for('edit_subject', subject_id=subject.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{{ url_for('delete_subject', subject_id=subject.id) }}" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger btn-sm">Delete</a>
+                <a href="{{ url_for('add_chapter', subject_id=subject.id) }}" class="btn btn-success btn-sm">Add Chapter</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="text-center mt-3">
+      <a href="{{ url_for('add_subject') }}" class="btn btn-success btn-lg mt-3">Add Subject</a>
+    </div>
+  </div>
 {% endblock %}

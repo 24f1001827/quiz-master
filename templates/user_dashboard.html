@@ -16,7 +16,12 @@
                                 {{ quiz.name }} ({{ quiz.date_of_quiz }})
                                 {% if quiz.date_of_quiz == current_date %}
                                     <span class="badge badge-warning">Today</span>
-                                <a href="{{ url_for('attempt_quiz', quiz_id=quiz.id) }}" class="btn btn-primary float-right">Attempt Quiz</a>
+                                    {% if quiz.id in attempted_quizzes %}
+                                        <p class="text-muted">Attempted</p>
+                                        <a href="{{ url_for('quiz_statistics', quiz_id=quiz.id) }}" class="btn btn-primary float-right">View Statistics</a>
+                                    {% else %}
+                                        <a href="{{ url_for('attempt_quiz', quiz_id=quiz.id) }}" class="btn btn-primary float-right">Attempt Quiz</a>
+                                    {% endif %}
                                 {% endif %}
                             </li>
                         {% endfor %}

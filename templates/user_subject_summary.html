@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}{{ subject.name }} Summary{% endblock %}
+
 {% block content %}
     <div class="container">
         <h1 class="display-4 text-center mb-4">{{ subject.name }} Summary</h1>
@@ -40,7 +42,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">{{ chapter.name }}</h5>
-                            <a href="{{ url_for('user_chapter_summary', subject_id=subject.id, chapter_id=chapter.id) }}" class="btn btn-primary">View Summary</a>
+                            <a href="{{ url_for('user_chapter_summary', user_id = user.id, subject_id=subject.id, chapter_id=chapter.id) }}" class="btn btn-primary">View Summary</a>
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,7 @@
 {% block title %}Quiz Statistics{% endblock %}
 
 {% block content %}
-    <h1 class="display-4">Quiz Statistics: {{ quiz.name }}</h1>
+    <h1 class="display-4">Quiz Statistics for {{user.username}}: <strong> {{ quiz.name }} </strong></h1>
     <hr>
     {% if score %}
         <div class="row">

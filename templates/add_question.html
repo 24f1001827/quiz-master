@@ -1,41 +1,42 @@
 {% extends 'base.html' %}
 
-{% block title %}Add Question{% endblock %}
+{% block title %} Add Question {% endblock %}
 
 {% block content %}
-  <h1>Add Question</h1>
-  <form action = "/add_question" method="post">
-    <div class="form-group">
-      <label for="statement">Statement:</label>
-      <textarea id="statement" name="statement" required></textarea>
-    </div>
-    <div class="form-group">
-      <label for="option_a">Option A:</label>
-      <input type="text" id="option_a" name="option_a" required>
-    </div>
-    <div class="form-group">
-        <label for="option_b">Option B:</label>
-        <input type="text" id="option_b" name="option_b" required>
+  <div class="container mt-5">
+    <h1 class="display-4 text-center">Add Question</h1>
+    <form action="/add_question" method="post">
+      <div class="form-group">
+        <label for="statement"><h4>Question Statement:</h4></label>
+        <textarea id="statement" name="statement" required class="form-control"></textarea>
       </div>
       <div class="form-group">
-        <label for="option_c">Option C:</label>
-        <input type="text" id="option_c" name="option_c" required>
+        <label for="option_a"><h4>Option A:</h4></label>
+        <input type="text" id="option_a" name="option_a" required class="form-control">
       </div>
       <div class="form-group">
-        <label for="option_d">Option D:</label>
-        <input type="text" id="option_d" name="option_d" required>
+        <label for="option_b"><h4>Option B:</h4></label>
+        <input type="text" id="option_b" name="option_b" required class="form-control">
       </div>
       <div class="form-group">
-        <label for="correct_answer">Correct Answer:</label>
-        <input type="text" id="correct_answer" name="correct_answer" required>
+        <label for="option_c"><h4>Option C:</h4></label>
+        <input type="text" id="option_c" name="option_c" required class="form-control">
       </div>
       <div class="form-group">
-        <label for="marks">Marks:</label>
-        <input type="number" id="marks" name="marks" required>
+        <label for="option_d"><h4>Option D:</h4></label>
+        <input type="text" id="option_d" name="option_d" required class="form-control">
       </div>
       <div class="form-group">
-        <label for="quiz_id">Quiz:</label>
-        <select id="quiz_id" name="quiz_id" required>
+        <label for="correct_answer"><h4>Correct Answer:</h4></label>
+        <input type="text" id="correct_answer" name="correct_answer" required class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="marks"><h4>Marks:</h4></label>
+        <input type="number" id="marks" name="marks" required class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="quiz_id"><h4>Quiz:</h4></label>
+        <select id="quiz_id" name="quiz_id" required class="form-control">
           {% for quiz in quizzes %}
             {% if QUIZ %}
               <option value="{{ quiz.id }}" {% if quiz.id == QUIZ.id %}selected{% endif %}>{{ quiz.name }}</option>
@@ -45,6 +46,9 @@
           {% endfor %}
         </select>
       </div>
-      <button type="submit" class="btn btn-primary">Add Question</button>
-      </form>
-      {% endblock %}
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-primary btn-lg">Add Question</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

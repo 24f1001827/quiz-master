@@ -9,6 +9,7 @@ from datetime import datetime
 @login_required
 def admin_dashboard():
     if current_user.role != 'admin':
+        flash('You are not authorized to view this page!')
         return redirect(url_for('home'))
     quizzes = Quiz.query.all()   
     current_date = datetime.today().date() 
@@ -17,6 +18,7 @@ def admin_dashboard():
 @app.route('/admin_search') #URL for ADMIN SEARCH
 def admin_search():
     if current_user.role != 'admin':
+        flash('You are not authorized to view this page!')
         return redirect(url_for('home'))
     search = request.args.get('search')
     if search:
@@ -33,14 +35,34 @@ def admin_search():
 @login_required
 def manage_users():
     if current_user.role != 'admin':
+        flash('You are not authorized to view this page!')
         return redirect(url_for('home'))
     users = User.query.all()
     return render_template('manage_users.html', users=users)
+
+@app.route('/delete_user/<int:user_id>')
+@login_required
+def delete_user(user_id):
+    if current_user.role != 'admin':
+        flash('You are not authorized to delete users!')
+        return redirect(url_for('home')) 
+    user = User.query.get_or_404(user_id) 
+    for attempt in user.quiz_attempts:
+        db.session.delete(attempt) 
+        for answers in attempt.answers:
+            db.session.delete(answers)
+    db.session.delete(user) 
+    db.session.commit()
+    flash('User deleted successfully!')
+    return redirect(url_for('manage_users'))
+
+      
 # Manage Subjects
 @app.route('/manage_subjects')
 @login_required
 def manage_subjects():
     if current_user.role != 'admin':
+        flash('You are not authorized to view this page!')
         return redirect(url_for('home'))
     subjects = Subject.query.all()
     return render_template('manage_subjects.html', subjects=subjects)
@@ -49,6 +71,7 @@ def manage_subjects():
 @login_required
 def add_subject():
     if current_user.role != 'admin':
+        flash('You are not authorized to add subjects!')
         return redirect(url_for('home'))
     if request.method == 'GET':
         return render_template('add_subject.html') 
@@ -69,6 +92,7 @@ def add_subject():
 @login_required
 def edit_subject(subject_id):
     if current_user.role != 'admin':
+        flash('You are not authorized to edit subjects!')
         return redirect(url_for('home'))
     if request.method == 'GET':
         return render_template('edit_subject.html', subject=Subject.query.get_or_404(subject_id))
@@ -84,8 +108,20 @@ def edit_subject(subject_id):
 @login_required
 def delete_subject(subject_id):
     if current_user.role != 'admin':
+        flash('You are not authorized to delete subjects!')
         return redirect(url_for('home'))
     subject = Subject.query.get_or_404(subject_id)
+    for chapter in subject.chapters:
+        for quiz in chapter.quizzes: 
+            for attempt in quiz.quiz_attempts:
+                for answers in attempt.answers:
+                    db.session.delete(answers)
+                db.session.delete(attempt)
+
+            for question in quiz.questions:
+                db.session.delete(question)
+            db.session.delete(quiz)
+        db.session.delete(chapter)
     db.session.delete(subject)
     db.session.commit()
     flash('Subject deleted successfully!')
@@ -96,6 +132,7 @@ def delete_subject(subject_id):
 @login_required
 def manage_chapters():
     if current_user.role != 'admin':
+        flash('You are not authorized to view this page!')
         return redirect(url_for('home'))
     chapters = Chapter.query.all()
     subjects = Subject.query.all()
@@ -106,6 +143,7 @@ def manage_chapters():
 @login_required
 def add_chapter(subject_id=None):
     if current_user.role != 'admin':
+        flash('You are not authorized to add chapters!')
         return redirect(url_for('home'))
     if request.method == 'GET':
         subjects = Subject.query.all()
@@ -137,6 +175,7 @@ def add_chapter(subject_id=None):
 @login_required
 def edit_chapter(chapter_id):
     if current_user.role != 'admin':
+        flash('You are not authorized to edit chapters!')
         return redirect(url_for('home'))
     if request.method == 'GET':
         chapter = Chapter.query.get_or_404(chapter_id)
@@ -156,8 +195,18 @@ def edit_chapter(chapter_id):
 @login_required
 def delete_chapter(chapter_id):
     if current_user.role != 'admin':
+        flash('You are not authorized to delete chapters!')
         return redirect(url_for('home'))
     chapter = Chapter.query.get_or_404(chapter_id)
+    for quiz in chapter.quizzes:
+        for attempt in quiz.quiz_attempts:
+            for answers in attempt.answers:
+                db.session.delete(answers)
+            db.session.delete(attempt)
+
+        for question in quiz.questions:
+            db.session.delete(question)
+        db.session.delete(quiz)
     db.session.delete(chapter)
     db.session.commit()
     flash('Chapter deleted successfully!')
@@ -168,16 +217,19 @@ def delete_chapter(chapter_id):
 @login_required
 def manage_quizzes():
     if current_user.role != 'admin':
+        flash('You are not authorized to view this page!')
         return redirect(url_for('home'))
     quizzes = Quiz.query.all()
-    chapters = Chapter.query.all()
-    return render_template('manage_quizzes.html', quizzes=quizzes, chapters=chapters)
+    chapters = Chapter.query.all() 
+    current_date = datetime.today().date()
+    return render_template('manage_quizzes.html', quizzes=quizzes, chapters=chapters, current_date=current_date)
 
 @app.route('/add_quiz', methods=['GET','POST'])
 @app.route('/add_quiz/<int:chapter_id>', methods=['GET','POST'])
 @login_required
 def add_quiz(chapter_id=None):
     if current_user.role != 'admin':
+        flash('You are not authorized to add quizzes!')
         return redirect(url_for('home'))
     if request.method == 'GET':
         chapters = Chapter.query.all()
@@ -211,6 +263,7 @@ def add_quiz(chapter_id=None):
 @login_required
 def edit_quiz(quiz_id):
     if current_user.role != 'admin':
+        flash('You are not authorized to edit quizzes!')
         return redirect(url_for('home'))
     if request.method == 'GET':
         quiz = Quiz.query.get_or_404(quiz_id)
@@ -233,8 +286,16 @@ def edit_quiz(quiz_id):
 @login_required
 def delete_quiz(quiz_id):
     if current_user.role != 'admin':
-        return redirect(url_for('home'))
+        flash('You are not authorized to delete quizzes!')
+        return redirect(url_for('home')) 
     quiz = Quiz.query.get_or_404(quiz_id)
+    for attempt in quiz.quiz_attempts:
+        for answers in attempt.answers:
+            db.session.delete(answers)
+        db.session.delete(attempt)
+        
+    for question in quiz.questions:
+        db.session.delete(question)
     db.session.delete(quiz)
     db.session.commit()
     flash('Quiz deleted successfully!')
@@ -245,6 +306,7 @@ def delete_quiz(quiz_id):
 @login_required
 def manage_questions():
     if current_user.role != 'admin':
+        flash('You are not authorized to view this page!')
         return redirect(url_for('home'))
     questions = Question.query.all()
     quizzes = Quiz.query.all()
@@ -255,6 +317,7 @@ def manage_questions():
 @login_required
 def add_question(quiz_id=None):
     if current_user.role != 'admin':
+        flash('You are not authorized to add questions!')
         return redirect(url_for('home'))
     if request.method == 'GET':
         quizzes = Quiz.query.all()
@@ -289,6 +352,7 @@ def add_question(quiz_id=None):
 @login_required
 def edit_question(question_id):
     if current_user.role != 'admin':
+        flash('You are not authorized to edit questions!')
         return redirect(url_for('home'))
     if request.method == 'GET':
         question = Question.query.get_or_404(question_id)
@@ -312,6 +376,7 @@ def edit_question(question_id):
 @login_required
 def delete_question(question_id):
     if current_user.role != 'admin':
+        flash('You are not authorized to delete questions!')
         return redirect(url_for('home'))
     question = Question.query.get_or_404(question_id)
     db.session.delete(question)

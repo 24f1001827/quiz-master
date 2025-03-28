@@ -1,25 +1,37 @@
-{% extends "base.html" %} 
-{% block title %} Admin {% endblock %} 
+{% extends "base.html" %}
 
-{% block content %}  
-<h1> Welcome Admin </h1>
-<h2>Quizzes:</h2>
+{% block title %} Admin Dashboard {% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="display-4 text-center">Welcome Admin</h1>
+
+    <h2 class="mt-4">Quizzes:</h2>
+
     <div class="row">
-    {% for quiz in quizzes %}
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ quiz.name }}</h5>
-                    {% if quiz.date_of_quiz == current_date %}
-                    <p class="card-text">Ongoing Quiz </p>
-                    {% elif quiz.date_of_quiz > current_date %}
-                    <p class="card-text">Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
-                    {% else %}
-                    <p class="card-text">Completed Quiz - <a href="{{ url_for('quiz_summary', quiz_id=quiz.id) }}">View Statistics</a></p>
-                    {% endif %}
-                </div>
+      {% for quiz in quizzes %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ quiz.name }}</h5>
+
+              {% if quiz.date_of_quiz == current_date %}
+                <p class="card-text text-warning">Ongoing Quiz</p>
+              {% elif quiz.date_of_quiz > current_date %}
+                <p class="card-text text-info">Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
+              {% else %}
+                <p class="card-text text-success">Completed Quiz</p>
+              {% endif %}
+
+              {% if quiz.date_of_quiz == current_date or quiz.date_of_quiz > current_date %}
+                <a href="{{ url_for('quiz_details', quiz_id=quiz.id) }}" class="btn btn-primary">View Quiz Details</a>
+              {% else %}
+                <a href="{{ url_for('quiz_summary', quiz_id=quiz.id) }}" class="btn btn-primary">View Statistics</a>
+              {% endif %}
             </div>
+          </div>
         </div>
-    {% endfor %}
+      {% endfor %}
     </div>
+  </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #3498db !important;">
     <div class="container-fluid">
       <a class="navbar-brand" href="#"> <img src = "\static\quiz-master-high-resolution-logo.png" alt = "Quiz-Master" width = "90" height = "60"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
             {% else %}
             <!-- ** User-specific navigation options ** -->
             <li class="nav-item">
-              <a class="nav-link" href={{ url_for('user_dashboard', username = current_user.username) }}>Dashboard</a>
+              <a class="nav-link" href={{ url_for('user_dashboard', user_id = current_user.id) }}>Dashboard</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href={{ url_for('subjects') }}>Subjects</a>
@@ -46,7 +46,7 @@
               <a class="nav-link" href={{ url_for('scores') }}>Scores</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href={{ url_for('user_summary') }}>Summary</a>
+              <a class="nav-link" href={{ url_for('user_summary', user_id = current_user.id) }}>Summary</a>
             <li class = "nav-item">
               <a class = "nav-link" href = {{ url_for('user_profile', user_id = current_user.id )}}>Profile</a>
             </li> 

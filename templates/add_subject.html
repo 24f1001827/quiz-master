@@ -1,18 +1,24 @@
 {% extends 'base.html' %}
 
-{% block title %}Add Subject{% endblock %}
+{% block title %} Add Subject {% endblock %}
 
 {% block content %}
-  <h1>Add Subject</h1>
-  <form action = "/add_subject" method="post">
-    <div class="form-group">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required>
-    </div>
-    <div class="form-group">
-      <label for="description">Description:</label>
-      <textarea id="description" name="description" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Subject</button>
-  </form>
+  <div class="container mt-5">
+    <h1 class="display-4 text-center">Add Subject</h1>
+
+    <form action="/add_subject" method="post">
+      <div class="form-group">
+        <label for="name"><h4>Subject Name:</h4></label>
+        <input type="text" id="name" name="name" required class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="description"><h4>Subject Description:</h4></label>
+        <textarea id="description" name="description" required class="form-control"></textarea>
+      </div>
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-primary btn-lg">Add Subject</button>
+      </div>
+    </form>
+  </div>
 {% endblock %}

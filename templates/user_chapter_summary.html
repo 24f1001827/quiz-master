@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}{{ chapter.name }} Summary{% endblock %}
+
 {% block content %}
     <div class="container">
         <h1 class="display-4 text-center mb-4">{{ chapter.name }} Summary</h1>
@@ -17,7 +19,7 @@
                 labels: labels,
                 datasets: [{
                     label: 'Quiz Scores',
-                    data: averageScores,
+                    data: scores,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1

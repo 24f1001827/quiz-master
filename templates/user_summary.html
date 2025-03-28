@@ -49,7 +49,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">{{ subject.name }}</h5>
-                            <a href="{{ url_for('user_subject_summary', subject_id=subject.id) }}" class="btn btn-primary">View Summary</a>
+                            <a href="{{ url_for('user_subject_summary', user_id = user.id, subject_id=subject.id) }}" class="btn btn-primary">View Summary</a>
                         </div>
                     </div>
                 </div>

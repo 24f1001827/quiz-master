@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit Subject{% endblock %}
+{% block title %} Edit Subject {% endblock %}
 
 {% block content %}
-  <h1>Edit Subject</h1>
-  <form action = "/edit_subject/{{subject.id}}" method="post"> 
-    <div class="form-group">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" value="{{ subject.name }}" required>
-    </div>
-    <div class="form-group">
-      <label for="description">Description:</label>
-      <textarea id="description" name="description" required>{{ subject.description }}</textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Update Subject</button>
-  </form>
+  <div class="container mt-5">
+    <h1 class="display-4 text-center">Edit Subject</h1>
+    <form action="/edit_subject/{{ subject.id }}" method="post">
+      <div class="form-group">
+        <label for="name"><h4>Subject Name:</h4></label>
+        <input type="text" id="name" name="name" value="{{ subject.name }}" required class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="description"><h4>Subject Description:</h4></label>
+        <textarea id="description" name="description" required class="form-control">{{ subject.description }}</textarea>
+      </div>
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-primary btn-lg">Update Subject</button>
+      </div>
+    </form>
+  </div>
 {% endblock %}

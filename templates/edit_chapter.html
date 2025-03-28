@@ -1,26 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit Chapter{% endblock %}
+{% block title %} Edit Chapter {% endblock %}
 
 {% block content %}
-  <h1>Edit Chapter</h1>
-  <form action = "/edit_chapter/{{chapter.id}}" method="post">
-    <div class="form-group">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" value="{{ chapter.name }}" required>
-    </div>
-    <div class="form-group">
-      <label for="subject_id">Subject:</label>
-      <select id="subject_id" name="subject_id" required>
-        {% for subject in subjects %}
-          <option value="{{ subject.id }}" {% if subject.id == chapter.subject_id %}selected{% endif %}>{{ subject.name }}</option>
-        {% endfor %}
-      </select> 
-    </div>
-    <div class="form-group">
-      <label for="description">Description:</label>
-      <textarea id="description" name="description" required>{{ chapter.description }}</textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Update Chapter</button>
-  </form>
+  <div class="container mt-5">
+    <h1 class="display-4 text-center">Edit Chapter</h1>
+    <form action="/edit_chapter/{{ chapter.id }}" method="post">
+      <div class="form-group">
+        <label for="name"><h4>Chapter Name:</h4></label>
+        <input type="text" id="name" name="name" value="{{ chapter.name }}" required class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="subject_id"><h4>Subject:</h4></label>
+        <select id="subject_id" name="subject_id" required class="form-control">
+          {% for subject in subjects %}
+            <option value="{{ subject.id }}" {% if subject.id == chapter.subject_id %}selected{% endif %}>{{ subject.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="description"><h4>Chapter Description:</h4></label>
+        <textarea id="description" name="description" required class="form-control">{{ chapter.description }}</textarea>
+      </div>
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-primary btn-lg">Update Chapter</button>
+      </div>
+    </form>
+  </div>
 {% endblock %}
