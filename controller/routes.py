@@ -14,6 +14,10 @@ def home():
     else:
          return render_template("home.html") 
     
+@app.route('/about')
+def about():
+    return render_template('about.html')
+    
 @app.route('/subject/<int:subject_id>')
 @login_required
 def subject_details(subject_id): # URL for displaying the details of a subject
@@ -33,5 +37,10 @@ def chapter_details(chapter_id):
 def quiz_details(quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
     questions = quiz.questions
-    current_date = datetime.today().date()
-    return render_template('quiz_details.html', quiz=quiz, questions=questions, current_date=current_date)
+    current_date = datetime.today().date()  
+    if current_user.role == 'user':
+        user = User.query.get_or_404(current_user.id)
+        attempt = Score.query.filter_by(user_id = user.id, quiz_id = quiz.id)
+        if attempt: 
+            return render_template('quiz_details.html', quiz=quiz, questions=questions, current_date=current_date, user = user)
+    return render_template('quiz_details.html', quiz=quiz, questions=questions, current_date=current_date, user = None)

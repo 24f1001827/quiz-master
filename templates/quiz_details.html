@@ -21,13 +21,19 @@
         {% endif %} 
     {% else %}
         {% if quiz.date_of_quiz == current_date %}
-        <p>Ongoing Quiz <a href = "{{url_for('attempt_quiz', quiz_id = quiz.id)}}"> Attempt Quiz</a> </p>
+        <p>Ongoing Quiz 
+            {% if user %}
+                <a href= = "{{ url_for('quiz statistics', user_id = current_user.id, quiz_id = quiz.id) }}">View Statistics</a>
+            {% else %}
+                <a href = "{{url_for('attempt_quiz', quiz_id = quiz.id)}}"> Attempt Quiz</a> 
+            {% endif %}
+        </p>
         {% elif quiz.date_of_quiz > current_date %}
         <p>Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
         {% else %}
         <p>Completed Quiz - <a href="{{ url_for('quiz_statistics', user_id = current_user.id,quiz_id=quiz.id) }}">View Statistics</a></p>
         {% endif %} 
-    {% endif %} 
+    {% endif %}  
 {% else %}
     <h1>NOT AUTHORIZED TO VIEW THIS!</h1> 
 {% endif %}
