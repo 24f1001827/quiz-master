@@ -1,3 +1,9 @@
 .form-control:hover{
     background-color: #f0f0f0 !important;
+} 
+.navbar-custom{
+    background-color: #343a40 !important; 
+}
+.navbar-custom .nav-link{
+    color: #ffffff !important;
 }

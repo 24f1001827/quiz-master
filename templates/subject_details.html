@@ -3,31 +3,31 @@
 {% block title %}Subject Details{% endblock %}
 
 {% block content %}
-    <h1 class="display-4">{{ subject.name }}</h1>
-    <hr>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Subject Description</h5>
-                    <p class="card-text">{{ subject.description }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <h2>Chapters:</h2>
-            <div class="row">
-                {% for chapter in subject.chapters %}
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title"><a href="{{ url_for('chapter_details', chapter_id=chapter.id) }}">{{ chapter.name }}</a></h5>
-                                <p class="card-text">{{ chapter.description }}</p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+  <h1 class="display-4 text-center">
+    <strong>{{ subject.name }}</strong>
+  </h1>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <p class="lead">{{ subject.description }}</p>
     </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h2>Chapters:</h2>
+      <div class="row">
+        {% for chapter in subject.chapters %}
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a href="{{ url_for('chapter_details', chapter_id=chapter.id) }}">{{ chapter.name }}</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 {% endblock %}

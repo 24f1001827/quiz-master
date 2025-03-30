@@ -3,15 +3,16 @@
 {% block title %} Home {% endblock %}
 
 {% block content %}
-  <div class="container-fluid" style="background-color: #212529; height: 100vh; color: #ffffff;">
+  <div class="container-fluid color-primary" style="height: 100vh; color: #ffffff; background: linear-gradient(to right, #4C3BCF, #25aac5)">
     <div class="row justify-content-center align-items-center h-100">
       <div class="col-md-6 text-center">
-        <h1 class="display-4 font-weight-bold" style="color: #4CAF50;">Unlock Your Potential!</h1>
-        <h2 class="display-5" style="color: #8BC34A;">Take the Quiz Master Challenge and Discover Your Strengths!</h2>
-        <p class="lead" style="color: #BDC3C7;">Test your knowledge, compete with others, and climb the leaderboard!</p>
+        <img src="{{ url_for('static', filename='quiz-master-high-resolution-logo.png') }}" alt="Quiz-Master" class="img-fluid" style="width: 300px;">
+        <h1 class="display-4 font-weight-bold" style="color: black;" >Unlock Your Potential!</h1>
+        <h2 class="display-5" style="color: black;">Take the Quiz Master Challenge and Discover Your Strengths!</h2>
+        <p class="lead" style="color: black;">Test your knowledge, view your scores, get detailed analysis of your performances</p>
         <div class="mt-4">
-          <a href="{{ url_for('register') }}" class="btn btn-success btn-lg" style="background-color: #8BC34A; border-color: #8BC34A; color: #ffffff;">Sign Up</a>
-          <p class="text-muted mt-2" style="color: #FFC107 !important;">Already an existing user? <a href="{{ url_for('login') }}" style="color: #4CAF50;">Login</a></p>
+          <a href="{{ url_for('register') }}" class="btn btn-success btn-lg" style="background-color: #FF7F50; border-color: #8BC34A; color: #ffffff;">Sign Up</a>
+          <p class="text-muted mt-2" style="color: black !important;">Already an existing user? <a href="{{ url_for('login') }}" style="color: rgb(255, 128, 0);"><strong>Login</strong></a></p>
         </div>
       </div>
     </div>

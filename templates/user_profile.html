@@ -6,21 +6,21 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-center text-primary">User Profile: {{ user.username }}</h1>
+                <h1 class="display-4 text-center">User Profile: <strong>{{ user.username }}</strong></h1>
                 <hr>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <h2 class="text-info"> Details</h2>
-                <p><strong>Username:</strong> {{ user.username }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-                <p><strong>Full Name:</strong> {{ user.full_name }}</p>
+                <h2 class="display-6 font-weight-bold"> Details</h2>
+                <p class="lead text-muted"><strong>Username:</strong> {{ user.username }}</p>
+                <p class="lead text-muted"><strong>Email:</strong> {{ user.email }}</p>
+                <p class="lead text-muted"><strong>Full Name:</strong> {{ user.full_name }}</p>
             </div>
             <div class="col-md-6">
-                <h2 class="text-info">Account Information</h2>
-                <p><strong>Account Created:</strong> {{ user.created_at }}</p>
-                <p><strong>Last Login:</strong> {{ user.last_login }}</p>
+                <h2 class="display-6 font-weight-bold">Account Information</h2>
+                <p class="lead text-muted"><strong>Account Created:</strong> {{ user.created_at }}</p>
+                <p class="lead text-muted"><strong>Last Login:</strong> {{ user.last_login }}</p>
             </div>
         </div>
         {% if current_user.role == 'user' and current_user.id == user.id %}

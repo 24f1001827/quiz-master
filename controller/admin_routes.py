@@ -253,7 +253,7 @@ def add_quiz(chapter_id=None):
         syllabus = request.form['syllabus']
         total_questions = request.form['total_questions']
         maximum_marks = request.form['maximum_marks']
-        quiz = Quiz(name=name, date_of_quiz=date_of_quiz, duration=duration, syllabus=syllabus, total_questions=total_questions, maximum_marks=maximum_marks, chapter=chapter)
+        quiz = Quiz(name=name, date_of_quiz=date_of_quiz, duration=duration, syllabus=syllabus, total_questions = total_questions, maximum_marks=maximum_marks,chapter=chapter)
         db.session.add(quiz)
         db.session.commit()
         flash('Quiz added successfully!', 'success')
@@ -330,7 +330,7 @@ def add_question(quiz_id=None):
         else:
             return render_template('add_question.html', quizzes=quizzes, QUIZ=None)
     else:
-        question = Question.query.filter_by(statement=request.form['statement']).first()
+        question = Question.query.filter_by(statement=request.form['statement']).first() 
         if question:
             flash('Question already exists!', 'warning')
             return redirect(url_for('manage_questions'))
@@ -341,7 +341,8 @@ def add_question(quiz_id=None):
         option_c = request.form['option_c']
         option_d = request.form['option_d']
         correct_answer = request.form['correct_answer']
-        marks = request.form['marks']
+        marks = request.form['marks']  
+        #quiz.maximum_marks += marks
         question = Question(statement=statement, option_a=option_a, option_b=option_b, option_c=option_c, option_d=option_d, correct_answer=correct_answer, marks=marks, quiz=quiz)
         db.session.add(question)
         db.session.commit()
@@ -366,8 +367,10 @@ def edit_question(question_id):
         question.option_b = request.form['option_b']
         question.option_c = request.form['option_c']
         question.option_d = request.form['option_d']
-        question.correct_answer = request.form['correct_answer']
-        question.marks = request.form['marks']
+        question.correct_answer = request.form['correct_answer'] 
+        #question.quiz.maximum_marks -= question.marks  
+        question.marks = request.form['marks'] 
+        #question.quiz.maximum_marks += question.marks 
         db.session.commit()
         flash('Question updated successfully!', 'success')
         return redirect(url_for('manage_questions'))

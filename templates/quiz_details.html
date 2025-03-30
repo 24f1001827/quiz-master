@@ -11,14 +11,59 @@
 <h3 class = "text-center"> Total marks : {{ quiz.maximum_marks }} </h3>
 {% if current_user.is_authenticated %} 
     {% if current_user.role == 'admin' %}
+    <h2 class="text-center">Quiz Questions:</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th>Options</th>
+          <th>Correct Answer</th>
+          <th>Marks</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for question in questions %}
+          <tr>
+            <td>{{question.statement}}</td>
+            <td>
+              <ul>
+                <li> {{question.option_a}}</li>
+                <li> {{question.option_b}}</li>
+                <li> {{question.option_c}}</li>
+                <li> {{question.option_d}}</li>
+              </ul>
+            </td>
+            <td>
+              {{question.correct_answer}}
+            </td>
+            <td>
+              {{question.marks}}
+            </td>
+            <td>
+              <a href="{{url_for('edit_question', question_id = question.id)}}" class="btn btn-primary"> Edit Question </a>
+              <a href="{{url_for('delete_question', question_id = question.id)}}" class="btn btn-danger"> Delete Question </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
         {% if quiz.date_of_quiz == current_date %}
-        <p>Ongoing Quiz </p>
+            <div class="alert alert-info text-center" role="alert">
+                <strong>Ongoing Quiz</strong>
+                <a href="{{url_for('edit_quiz', quiz_id = quiz.id)}}" class="btn btn-primary">Edit Quiz</a>
+            </div>
         {% elif quiz.date_of_quiz > current_date %}
-        <p>Upcoming Quiz - {{ quiz.date_of_quiz }}</p>
-        <a href = "{{url_for('edit_quiz', quiz_id = quiz.id)}}" class="btn btn-primary"> Edit Quiz </a>
+            <div class="alert alert-warning text-center" role="alert">
+                <strong>Upcoming Quiz - {{ quiz.date_of_quiz }}</strong>
+                <a href="{{url_for('edit_quiz', quiz_id = quiz.id)}}" class="btn btn-primary">Edit Quiz</a>
+            </div>
         {% else %}
-        <p>Completed Quiz - <a href="{{ url_for('quiz_summary', quiz_id=quiz.id) }}">View Statistics</a></p>
-        {% endif %} 
+            <div class="alert alert-success text-center" role="alert">
+                <strong>Completed Quiz</strong>
+                <a href="{{ url_for('quiz_summary', quiz_id=quiz.id) }}">View Statistics</a>
+            </div>
+        {% endif %}
     {% else %}
         {% if quiz.date_of_quiz == current_date %}
         <p>Ongoing Quiz 

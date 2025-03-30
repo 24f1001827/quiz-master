@@ -83,6 +83,10 @@ def register():
             flash("Password should be a minimum of 8 characters")
             return render_template("register.html")
         
+        if len(password)>20:
+            flash("Password should be a maximum of 20 characters")
+            return render_template("register.html")
+        
         user = User.query.filter_by(email=email_id).first() 
         if user:
             flash("User already exists. Please go to login, or use a different email") 
