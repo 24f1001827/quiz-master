@@ -2,4 +2,3 @@ Flask
 Flask-SQLAlchemy
 jinja2
 flask-login
-Flask-ChartJS

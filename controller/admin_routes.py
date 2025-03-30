@@ -48,9 +48,9 @@ def delete_user(user_id):
         return redirect(url_for('home')) 
     user = User.query.get_or_404(user_id) 
     for attempt in user.quiz_attempts:
-        db.session.delete(attempt) 
         for answers in attempt.answers:
             db.session.delete(answers)
+        db.session.delete(attempt) 
     db.session.delete(user) 
     db.session.commit()
     flash('User deleted successfully!', 'success')
@@ -273,7 +273,8 @@ def edit_quiz(quiz_id):
         quiz = Quiz.query.get_or_404(quiz_id)
         quiz.chapter = Chapter.query.get_or_404(request.form['chapter_id'])
         quiz.name = request.form['name']
-        quiz.date_of_quiz = request.form['date_of_quiz']
+        date_of_quiz = datetime.strptime(request.form['date_of_quiz'], '%Y-%m-%d').date()
+        quiz.date_of_quiz = date_of_quiz
         quiz.duration = request.form['duration']
         quiz.syllabus = request.form['syllabus']
         quiz.total_questions = request.form['total_questions']
@@ -382,6 +383,8 @@ def delete_question(question_id):
         flash('You are not authorized to delete questions!', 'danger')
         return redirect(url_for('home'))
     question = Question.query.get_or_404(question_id)
+    for answer in question.answers:
+        db.session.delete(answer)
     db.session.delete(question)
     db.session.commit()
     flash('Question deleted successfully!', 'success')
