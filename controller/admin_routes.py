@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from main import app
 from controller.models import * 
 from datetime import datetime
+import re 
 
 
 @app.route('/admin_dashboard') #URL for ADMIN DASHBOARD
@@ -250,6 +251,9 @@ def add_quiz(chapter_id=None):
         name = request.form['name']
         date_of_quiz = datetime.strptime(request.form['date_of_quiz'], '%Y-%m-%d').date()
         duration = request.form['duration']
+        if not re.match(r'^\d{2}:\d{2}$', duration):
+            flash('Duration must be in HH:MM format', 'danger')
+            return redirect(url_for('add_quiz'))
         syllabus = request.form['syllabus']
         total_questions = request.form['total_questions']
         maximum_marks = request.form['maximum_marks']
@@ -275,7 +279,10 @@ def edit_quiz(quiz_id):
         quiz.name = request.form['name']
         date_of_quiz = datetime.strptime(request.form['date_of_quiz'], '%Y-%m-%d').date()
         quiz.date_of_quiz = date_of_quiz
-        quiz.duration = request.form['duration']
+        quiz.duration = request.form['duration'] 
+        if not re.match(r'^\d{2}:\d{2}$', quiz.duration):
+            flash('Duration must be in HH:MM format', 'danger')
+            return redirect(url_for('edit_quiz', quiz_id=quiz.id))
         quiz.syllabus = request.form['syllabus']
         quiz.total_questions = request.form['total_questions']
         quiz.maximum_marks = request.form['maximum_marks']
@@ -341,7 +348,11 @@ def add_question(quiz_id=None):
         option_b = request.form['option_b']
         option_c = request.form['option_c']
         option_d = request.form['option_d']
-        correct_answer = request.form['correct_answer']
+        correct_answer = request.form['correct_answer'] 
+        options = [option_a, option_b, option_c, option_d]
+        if correct_answer not in options:
+            flash('Correct answer must be one of the options', 'danger')
+            return redirect(url_for('add_question'))
         marks = request.form['marks']  
         #quiz.maximum_marks += marks
         question = Question(statement=statement, option_a=option_a, option_b=option_b, option_c=option_c, option_d=option_d, correct_answer=correct_answer, marks=marks, quiz=quiz)
@@ -368,6 +379,11 @@ def edit_question(question_id):
         question.option_b = request.form['option_b']
         question.option_c = request.form['option_c']
         question.option_d = request.form['option_d']
+        correct_answer = request.form['correct_answer']
+        options = [question.option_a, question.option_b, question.option_c, question.option_d]  
+        if correct_answer not in options:
+            flash('Correct answer must be one of the options', 'danger')
+            return redirect(url_for('edit_question', question_id=question.id))
         question.correct_answer = request.form['correct_answer'] 
         #question.quiz.maximum_marks -= question.marks  
         question.marks = request.form['marks'] 
