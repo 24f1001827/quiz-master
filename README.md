@@ -1,2 +1,4 @@
 # quiz-master
-Repository of the Quiz Master App, as part of MAD 1 Project
+Run the requirements.txt file, and download the required packages.
+Preferably create a virtual environment. 
+Then, run the main.py file 
